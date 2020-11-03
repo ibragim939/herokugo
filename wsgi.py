@@ -1,13 +1,44 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+import requests
 
 
 app = Flask(__name__)
 
+INSTANCE_URL = "https://api.maytapi.com/api"
+PRODUCT_ID = "de68250b-bd93-4558-afb6-92ba61dbc367"
+PHONE_ID = "6962"
+API_TOKEN = "5c7d320a-f411-41db-8720-9102d4cbfd65"
+
 
 @app.route("/")
-def home_view():
-    return "<h1>The void consumes</h1>"
-    
+def sms_reply():
+
+    try:
+
+        json_data = request.get_json()
+        phone = json_data['user']['phone']
+        text = json_data['message']['text']
+
+        url = INSTANCE_URL + "/" + PRODUCT_ID + "/" + PHONE_ID + "/sendMessage"
+        headers = {
+            "Content-Type": "application/json",
+            "x-maytapi-key": API_TOKEN,
+        }
+
+        body = {"type": "text", "message": text,
+                "to_number": phone}
+
+        response = requests.post(url, json=body, headers=headers)
+
+        return str(json_data)
+
+    except Exception as e:
+        if repr(e) == "KeyError('user',)":
+            print('that KeyError but its fine')
+        else:
+            print(repr(e))
+        return str("bad_resp")
+
 
 if __name__ == "__main__":
     app.run()

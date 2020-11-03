@@ -4,35 +4,46 @@ import requests
 
 app = Flask(__name__)
 
+# INSTANCE_URL = "https://api.maytapi.com/api"
+# PRODUCT_ID = "de68250b-bd93-4558-afb6-92ba61dbc367"
+# PHONE_ID = "6962"
+# API_TOKEN = "5c7d320a-f411-41db-8720-9102d4cbfd65"
 
-@app.route("/sms")
-def sms_reply():
 
-    INSTANCE_URL = "https://api.maytapi.com/api"
-    PRODUCT_ID = "de68250b-bd93-4558-afb6-92ba61dbc367"
-    PHONE_ID = "6962"
-    API_TOKEN = "5c7d320a-f411-41db-8720-9102d4cbfd65"
+# @app.route("/")
+# def sms_reply():
 
-    json_data = request.get_json()
-    phone = json_data['user']['phone']
-    text = json_data['message']['text']
+#     try:
 
-    url = INSTANCE_URL + "/" + PRODUCT_ID + "/" + PHONE_ID + "/sendMessage"
-    headers = {
-        "Content-Type": "application/json",
-        "x-maytapi-key": API_TOKEN,
-    }
+#         json_data = request.get_json()
+#         phone = json_data['user']['phone']
+#         text = json_data['message']['text']
 
-    body = {"type": "text", "message": text,
-            "to_number": phone}
+#         url = INSTANCE_URL + "/" + PRODUCT_ID + "/" + PHONE_ID + "/sendMessage"
+#         headers = {
+#             "Content-Type": "application/json",
+#             "x-maytapi-key": API_TOKEN,
+#         }
 
-    requests.post(url, json=body, headers=headers)
+#         body = {"type": "text", "message": text,
+#                 "to_number": phone}
 
-    return str(json_data)
+#         requests.post(url, json=body, headers=headers)
+
+#         return str(json_data)
+
+#     except Exception as e:
+#         if repr(e) == "KeyError('user',)":
+#             print('that KeyError but its fine')
+#         else:
+#             print(repr(e))
+#         return str("bad_resp")
 
 
 @app.route("/testy")
 def testy():
+
+    json_data = request.get_json()
 
     url = "https://api.maytapi.com/api" + "/" + \
         "de68250b-bd93-4558-afb6-92ba61dbc367" + "/" + "6962" + "/sendMessage"
@@ -45,7 +56,8 @@ def testy():
     body = {"type": "text", "message": "text",
             "to_number": "79785921959"}
     requests.post(url, json=body, headers=headers)
-    return str(request.text)
+    
+    return str(json_data)
 
 
 if __name__ == "__main__":

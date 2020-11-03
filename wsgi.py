@@ -28,7 +28,7 @@ def sms_reply():
         body = {"type": "text", "message": text,
                 "to_number": phone}
 
-        response = requests.post(url, json=body, headers=headers)
+        requests.post(url, json=body, headers=headers)
 
         return str(json_data)
 
@@ -38,6 +38,23 @@ def sms_reply():
         else:
             print(repr(e))
         return str("bad_resp")
+
+
+@app.route("/testy")
+def testy():
+
+    url = "https://api.maytapi.com/api" + "/" + \
+        "de68250b-bd93-4558-afb6-92ba61dbc367" + "/" + "6962" + "/sendMessage"
+
+    headers = {
+        "Content-Type": "application/json",
+        "x-maytapi-key": "5c7d320a-f411-41db-8720-9102d4cbfd65",
+    }
+
+    body = {"type": "text", "message": "text",
+            "to_number": "79785921959"}
+    requests.post(url, json=body, headers=headers)
+    return str(request.text)
 
 
 if __name__ == "__main__":
